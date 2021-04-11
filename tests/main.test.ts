@@ -3,7 +3,7 @@ import { Delays, greeter } from '../src/main';
 describe('greeter function', () => {
   jest.useFakeTimers();
 
-  const name = 'Sarah';
+  const name = 'John';
   let hello: string;
 
   // Act before assertions
