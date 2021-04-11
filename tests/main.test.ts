@@ -1,11 +1,9 @@
 import { Delays, greeter } from '../src/main';
 
 describe('greeter function', () => {
-  // Read more about fake timers
-  // http://facebook.github.io/jest/docs/en/timer-mocks.html#content
   jest.useFakeTimers();
 
-  const name = 'John';
+  const name = 'Johnny';
   let hello: string;
 
   // Act before assertions
