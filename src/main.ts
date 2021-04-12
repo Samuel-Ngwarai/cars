@@ -1,13 +1,23 @@
-import * as server from './server';
+import { Express } from "express";
+import { Server } from "./server";
+import { Routes } from "./routes";
 
-if (require.main === module) {
-  server.start().catch((err) => console.error(err))
-} else {
-  module.exports = {
-    start: () =>
-    server.start().catch((err) => console.error(err)),
-    stop: (): void => {
-      server.stop();
-    },
-  };
+export default class App {
+  public expressServer: Express;
+  private server: Server;
+
+  public constructor(private readonly listen: boolean) {}
+
+  public async init(): Promise<void> {
+    this.server = new Server();
+
+    const routes = new Routes();
+    this.server.addRoutes(routes);
+
+    this.expressServer = await this.server.init(this.listen);
+    console.log("App::init - Application started");
+  }
 }
+
+const app = new App(true);
+app.init();
