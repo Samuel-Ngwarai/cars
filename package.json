@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Cars management factory",
   "engines": {
-    "node": ">= 14.16 <15"
+    "node": "12.22.1"
   },
   "repository": {
     "type": "git",
@@ -39,9 +39,6 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "author": "Jakub Synowiec <github@jakubsynowiec.info>",
-  "license": "Apache-2.0",
-  "volta": {
-    "node": "14.16.0"
-  }
+  "author": "Samuel Ngwarai",
+  "license": "Apache-2.0"
 }
