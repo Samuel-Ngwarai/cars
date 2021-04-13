@@ -1,6 +1,6 @@
-import { Express } from "express";
-import { Server } from "./server";
-import { Routes } from "./routes";
+import { Express } from 'express';
+import { Server } from './server';
+import { Routes } from './routes';
 
 export default class App {
   public expressServer: Express;
@@ -15,7 +15,7 @@ export default class App {
     this.server.addRoutes(routes);
 
     this.expressServer = await this.server.init(this.listen);
-    console.log("App::init - Application started");
+    console.log('App::init - Application started');
   }
 }
 

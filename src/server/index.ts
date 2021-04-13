@@ -1,5 +1,5 @@
-import express, { Express } from "express";
-import { IRoute } from "../routes/routes-i";
+import express, { Express } from 'express';
+import { IRoute } from '../routes/routes-i';
 
 const port = 3000;
 export class Server {
@@ -14,11 +14,11 @@ export class Server {
       if (listen) {
         await this.server.listen(port);
       }
-      console.log("Server::init - Server running at:", {
+      console.log('Server::init - Server running at:', {
         uri: `localhost:${port}`,
       });
     } catch (error) {
-      console.error("Server::init - Server failed to start", { error });
+      console.error('Server::init - Server failed to start', { error });
       process.exit(1);
     }
 
