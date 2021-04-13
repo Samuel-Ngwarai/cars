@@ -19,5 +19,7 @@ export default class App {
   }
 }
 
-const app = new App(true);
-app.init();
+if (require.main === module) {
+  const app = new App(true);
+  app.init();
+}

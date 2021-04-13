@@ -1,5 +1,5 @@
-import { Express } from 'express';
+import { Express } from "express";
 
 export interface IRoute {
-    register: (app: Express) => void;
+  register: (app: Express) => void;
 }
