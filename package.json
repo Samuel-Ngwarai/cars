@@ -10,8 +10,10 @@
     "url": "https://github.com/Samuel-Ngwarai/cars.git"
   },
   "dependencies": {
+    "@types/config": "~0.0.38",
     "ajv": "~8.1.0",
     "body-parser": "~1.19.0",
+    "config": "~3.3.6",
     "express": "~4.17.1",
     "tslib": "~2.1.0",
     "uuid": "~8.3.2",

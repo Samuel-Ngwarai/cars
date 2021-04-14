@@ -1,14 +1,15 @@
 import express, { Express } from 'express';
 import bodyparser from 'body-parser';
+import config from 'config';
 
 import { CarsManagementController } from '../controllers/cars-management-controller';
 import { IRoute } from '../routes/routes-i';
 
 import { logger } from '../utils/logger';
 
-const port = 3000;
 export class Server {
   private server: Express;
+  private port = config.get('PORT');
 
   public constructor() {
     this.server = express();
@@ -17,10 +18,10 @@ export class Server {
   public async init(listen: boolean): Promise<Express> {
     try {
       if (listen) {
-        await this.server.listen(port);
+        await this.server.listen(this.port);
       }
       logger.info('Server::init - Server running at:', {
-        uri: `localhost:${port}`,
+        uri: `localhost:${this.port}`,
       });
     } catch (error) {
       logger.error('Server::init - Server failed to start', { error });
