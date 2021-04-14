@@ -27,5 +27,5 @@ describe(__filename, () => {
     };
 
     expect(res).toEqual(expected);
-  })
+  });
 });
