@@ -16,12 +16,12 @@ describe(__filename, () => {
     await app.init();
 
     expressServer = app.expressServer;
+    const uuidSpy = jest.spyOn(uuid, 'v4');
+    uuidSpy.mockReturnValue('mocked_uuid');
   });
 
   describe('GET', () => {
     it('/createCar should return createdCar', async () => {
-      const uuidSpy = jest.spyOn(uuid, 'v4');
-      uuidSpy.mockReturnValue('mocked_uuid');
       const requestBody: CreateCarMetadata = {
         model: 'someModel',
         color: 'someColor',
@@ -41,8 +41,6 @@ describe(__filename, () => {
     });
 
     it('/createCar should fail for invalid input', async () => {
-      const uuidSpy = jest.spyOn(uuid, 'v4');
-      uuidSpy.mockReturnValue('mocked_uuid');
       const requestBody: CreateCarMetadata = {
         model: 'someModel',
         color: 'someColor',
