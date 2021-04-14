@@ -4,6 +4,8 @@ import { Request, Response, NextFunction } from 'express';
 import { InputSchema } from '../../entities/schemas/input-validation';
 import { OutputSchema } from '../../entities/schemas/output-validation';
 
+import { logger } from '../../utils/logger';
+
 export class InputValidationUsecase {
   private ajv;
   private validator;
@@ -13,7 +15,7 @@ export class InputValidationUsecase {
   }
     
   public execute(req: Request, res: Response, next: NextFunction) {
-    console.log('InputValidationUsecase::execute');
+    logger.debug('InputValidationUsecase::execute');
 
     try {
       const valid = this.validator(req?.body);
@@ -24,7 +26,7 @@ export class InputValidationUsecase {
 
       next();
     } catch (error) {
-      console.log('InputValidationUsecase::execute, error occured during input validation ', error);
+      logger.error('InputValidationUsecase::execute, error occured during input validation ', error);
       throw error;
     }
   }
@@ -39,7 +41,7 @@ export class OutputValidationUsecase {
   }
     
   public execute(req: Request, res: Response, next: NextFunction) {
-    console.log('OutputValidationUsecase::execute');
+    logger.debug('OutputValidationUsecase::execute');
 
     try {
       const valid = this.validator(res?.locals);
@@ -49,7 +51,7 @@ export class OutputValidationUsecase {
       }
       res.json(res?.locals);
     } catch (error) {
-      console.log('OutputValidationUsecase::execute, error occured during input validation ', error);
+      logger.error('OutputValidationUsecase::execute, error occured during input validation ', error);
       throw error;
     }
   }

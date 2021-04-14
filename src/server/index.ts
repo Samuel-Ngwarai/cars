@@ -4,6 +4,8 @@ import bodyparser from 'body-parser';
 import { CarsManagementController } from '../controllers/cars-management-controller';
 import { IRoute } from '../routes/routes-i';
 
+import { logger } from '../utils/logger';
+
 const port = 3000;
 export class Server {
   private server: Express;
@@ -17,11 +19,11 @@ export class Server {
       if (listen) {
         await this.server.listen(port);
       }
-      console.log('Server::init - Server running at:', {
+      logger.info('Server::init - Server running at:', {
         uri: `localhost:${port}`,
       });
     } catch (error) {
-      console.error('Server::init - Server failed to start', { error });
+      logger.error('Server::init - Server failed to start', { error });
       process.exit(1);
     }
 
@@ -39,7 +41,7 @@ export class Server {
   public addErrorHandler() {
     this.server.use((err, req, res, next) => {
       // TODO: Extend error handler
-      console.error(err);
+      logger.error(err);
       res.status(500).send('Something broke!')
     })
   }
