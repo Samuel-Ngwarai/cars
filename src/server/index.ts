@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import bodyparser from 'body-parser';
 
+import { CarsManagementController } from '../controllers/cars-management-controller';
 import { IRoute } from '../routes/routes-i';
 
 const port = 3000;
@@ -31,8 +32,8 @@ export class Server {
     this.server.use(bodyparser.json());
   }
 
-  public addRoutes(routes: IRoute): void {
-    routes.register(this.server);
+  public addRoutes(routes: IRoute, carsManagementController: CarsManagementController): void {    
+    routes.register(this.server, carsManagementController);
   }
 
   public addErrorHandler() {

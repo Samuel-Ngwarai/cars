@@ -1,7 +1,8 @@
 import { Express } from 'express';
 import { Server } from './server';
-import { Routes } from './routes';
 
+import { CarsManagementController } from './controllers/cars-management-controller';
+import { Routes } from './routes';
 export default class App {
   public expressServer: Express;
   private server: Server;
@@ -11,9 +12,11 @@ export default class App {
   public async init(): Promise<void> {
     this.server = new Server();
 
+    const carsManagementController = new CarsManagementController();
     const routes = new Routes();
+
     this.server.addExtensions();
-    this.server.addRoutes(routes);
+    this.server.addRoutes(routes, carsManagementController);
     this.server.addErrorHandler();
 
     this.expressServer = await this.server.init(this.listen);
