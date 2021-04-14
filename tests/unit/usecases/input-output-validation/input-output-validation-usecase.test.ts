@@ -15,7 +15,9 @@ describe(__filename, () => {
         body: {
           model: 'someModel',
           brand: 'someBrand',
-          color: 'someColor'
+          color: 'someColor',
+          people: 5,
+          distance: 5000
         },
       } as Request;
 
@@ -56,6 +58,8 @@ describe(__filename, () => {
           model: 'someModel',
           brand: 'someBrand',
           color: 'someColor',
+          people: 5,
+          distance: 5000,
           additional: 'additionalProperty'
         },
       } as Request;
@@ -78,6 +82,38 @@ describe(__filename, () => {
         expect(error).toEqual(expectedError);
       }
     })
+
+    // TODO: can be automated for each wrong input with test.each()
+    it('should fail on invalid input', () => {
+
+      const mockRequest = {
+        body: {
+          model: 'someModel',
+          brand: 'someBrand',
+          color: 'someColor',
+          people: 50,
+          distance: -1,
+        },
+      } as Request;
+  
+      const expectedError = [
+        {
+          instancePath: '/people',
+          schemaPath: '#/properties/people/maximum',
+          keyword: 'maximum',
+          params: { comparison: '<=', limit: 10 },
+          message: 'must be <= 10'
+        },
+      ];
+  
+  
+      try {
+        inputValidationUsecase.execute(mockRequest, {} as Response, mockNext as NextFunction);
+        throw new Error('This line should not be reached');
+      } catch (error) {
+        expect(error).toEqual(expectedError);
+      }
+    })
   });
 
   describe('OutputValidationUsecase', () => {
@@ -88,7 +124,9 @@ describe(__filename, () => {
           id: 'someUUID',
           model: 'someModel',
           brand: 'someBrand',
-          color: 'someColor'
+          color: 'someColor',
+          people: 5,
+          distance: 5000
         },
         json: () => {}
       } as Request;
@@ -132,6 +170,8 @@ describe(__filename, () => {
           model: 'someModel',
           brand: 'someBrand',
           color: 'someColor',
+          people: 5,
+          distance: 5000,
           additional: 'additionalProperty'
         },
       } as Request;
@@ -153,7 +193,40 @@ describe(__filename, () => {
       } catch (error) {
         expect(error).toEqual(expectedError);
       }
-    })
-  })
+    });
+
+    it('should fail on input with additional properties', () => {
+
+      const mockResponse = {
+        locals: {
+          id: 'someUUID',
+          model: 'someModel',
+          brand: 'someBrand',
+          color: 'someColor',
+          people: 50,
+          distance: -1
+
+        },
+      } as Request;
+  
+      const expectedError =  [
+        {
+          instancePath: '/people',
+          schemaPath: '#/properties/people/maximum',
+          keyword: 'maximum',
+          params: { comparison: '<=', limit: 10 },
+          message: 'must be <= 10'
+        },
+      ];
+  
+  
+      try {
+        outputValidationUsecase.execute({} as Request, mockResponse as Response, mockNext as NextFunction);
+        throw new Error('This line should not be reached');
+      } catch (error) {
+        expect(error).toEqual(expectedError);
+      }
+    });
+  });
 
 });

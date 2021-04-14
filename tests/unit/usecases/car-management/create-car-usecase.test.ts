@@ -14,7 +14,9 @@ describe(__filename, () => {
     const carData = {
       model: 'model',
       brand: 'brand',
-      color: 'color'
+      color: 'color',
+      people: 5,
+      distance: 5000
     };
 
     const res = await createCarUsecase.execute(carData);

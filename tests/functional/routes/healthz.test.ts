@@ -27,5 +27,19 @@ describe(__filename, () => {
       expect(res.body).toEqual({ ready: true });
       expect(res.statusCode).toEqual(200);
     });
+
+    it('/ should return error', async () => {
+      const res = await request(expressServer).get('/');
+
+      expect(res.statusCode).toEqual(404);
+      expect(res.error.text).toEqual('Uknown route called. Try "/createCar" for example');
+    });
+
+    it('/ random Routes should return error', async () => {
+      const res = await request(expressServer).get('/randomRoute');
+
+      expect(res.statusCode).toEqual(404);
+      expect(res.error.text).toEqual('Uknown route called. Try "/createCar" for example');
+    });
   });
 });
