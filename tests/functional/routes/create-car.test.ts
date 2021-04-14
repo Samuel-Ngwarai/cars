@@ -34,7 +34,7 @@ describe(__filename, () => {
       const expected = {
         id: 'mocked_uuid',
         ...requestBody,
-      }
+      };
 
       expect(res.body).toEqual(expected);
       expect(res.statusCode).toEqual(200);
@@ -51,8 +51,8 @@ describe(__filename, () => {
 
       const res = await request(expressServer).post('/createCar').send(requestBody);
 
-      expect(res.statusCode).toEqual(500);
-      expect(res.error.text).toEqual('Something broke!');
+      expect(res.statusCode).toEqual(422);
+      expect(res.body?.message).toEqual('[{"instancePath":"/people","schemaPath":"#/properties/people/maximum","keyword":"maximum","params":{"comparison":"<=","limit":10},"message":"must be <= 10"}]');
     });
   });
 });

@@ -12,5 +12,7 @@
       "quotes": ["error", "single"],
       "indent": ["error", 2],
       "object-curly-spacing": ["error", "always"],
+      "no-trailing-spaces": "error",
+      "semi": ["error", "always"]
   }
 }

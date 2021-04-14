@@ -10,7 +10,7 @@ export class CarsManagementController {
     constructor() {}
 
     public async createCar(req: Request, res: Response, next: NextFunction): Promise<void> {
-      logger.info('CarsManagementController::createCar')
+      logger.info('CarsManagementController::createCar');
       try {
         const { model, brand, color, people, distance } = req.body;
         const createCarData: CreateCarMetadata = { model, brand, color, people, distance };

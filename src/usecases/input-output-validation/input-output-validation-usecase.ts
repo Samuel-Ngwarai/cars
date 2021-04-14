@@ -1,5 +1,6 @@
 import Ajv from 'ajv';
 import { Request, Response, NextFunction } from 'express';
+import { GeneralError } from '../../entities/error';
 
 import { InputSchema } from '../../entities/schemas/input-validation';
 import { OutputSchema } from '../../entities/schemas/output-validation';
@@ -13,7 +14,7 @@ export class InputValidationUsecase {
     this.ajv = new Ajv();
     this.validator = this.ajv.compile(InputSchema);
   }
-    
+
   public execute(req: Request, res: Response, next: NextFunction) {
     logger.debug('InputValidationUsecase::execute');
 
@@ -27,7 +28,7 @@ export class InputValidationUsecase {
       next();
     } catch (error) {
       logger.error('InputValidationUsecase::execute, error occured during input validation ', error);
-      throw error;
+      throw new GeneralError({ message: JSON.stringify(error), status: 422 });
     }
   }
 };
@@ -39,7 +40,7 @@ export class OutputValidationUsecase {
     this.ajv = new Ajv();
     this.validator = this.ajv.compile(OutputSchema);
   }
-    
+
   public execute(req: Request, res: Response, next: NextFunction) {
     logger.debug('OutputValidationUsecase::execute');
 
@@ -52,7 +53,7 @@ export class OutputValidationUsecase {
       res.json(res?.locals);
     } catch (error) {
       logger.error('OutputValidationUsecase::execute, error occured during input validation ', error);
-      throw error;
+      throw new GeneralError({ message: JSON.stringify(error), status: 422 });
     }
   }
 };

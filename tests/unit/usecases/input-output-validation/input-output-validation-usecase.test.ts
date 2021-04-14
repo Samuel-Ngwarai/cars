@@ -41,13 +41,13 @@ describe(__filename, () => {
           params: { missingProperty: 'model' },
           message: 'must have required property \'model\''
         },
-      ]
+      ];
 
       try {
         inputValidationUsecase.execute(mockRequest, {} as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
-        expect(error).toEqual(expectedError);
+        expect(error.message).toEqual(JSON.stringify(expectedError));
       }
     });
 
@@ -63,7 +63,7 @@ describe(__filename, () => {
           additional: 'additionalProperty'
         },
       } as Request;
-  
+
       const expectedError = [
         {
           instancePath: '',
@@ -73,15 +73,15 @@ describe(__filename, () => {
           message: 'must NOT have additional properties'
         },
       ];
-  
-  
+
+
       try {
         inputValidationUsecase.execute(mockRequest, {} as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
-        expect(error).toEqual(expectedError);
+        expect(error.message).toEqual(JSON.stringify(expectedError));
       }
-    })
+    });
 
     // TODO: can be automated for each wrong input with test.each()
     it('should fail on invalid input', () => {
@@ -95,7 +95,7 @@ describe(__filename, () => {
           distance: -1,
         },
       } as Request;
-  
+
       const expectedError = [
         {
           instancePath: '/people',
@@ -105,15 +105,15 @@ describe(__filename, () => {
           message: 'must be <= 10'
         },
       ];
-  
-  
+
+
       try {
         inputValidationUsecase.execute(mockRequest, {} as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
-        expect(error).toEqual(expectedError);
+        expect(error.message).toEqual(JSON.stringify(expectedError));
       }
-    })
+    });
   });
 
   describe('OutputValidationUsecase', () => {
@@ -152,13 +152,13 @@ describe(__filename, () => {
           params: { missingProperty: 'id' },
           message: 'must have required property \'id\''
         },
-      ]
+      ];
 
       try {
         outputValidationUsecase.execute({} as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
-        expect(error).toEqual(expectedError);
+        expect(error.message).toEqual(JSON.stringify(expectedError));
       }
     });
 
@@ -175,7 +175,7 @@ describe(__filename, () => {
           additional: 'additionalProperty'
         },
       } as unknown as  Request;
-  
+
       const expectedError =  [
         {
           instancePath: '',
@@ -185,13 +185,13 @@ describe(__filename, () => {
           message: 'must NOT have additional properties'
         },
       ];
-  
-  
+
+
       try {
         outputValidationUsecase.execute({} as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
-        expect(error).toEqual(expectedError);
+        expect(error.message).toEqual(JSON.stringify(expectedError));
       }
     });
 
@@ -208,7 +208,7 @@ describe(__filename, () => {
 
         },
       } as unknown as  Request;
-  
+
       const expectedError =  [
         {
           instancePath: '/people',
@@ -218,13 +218,13 @@ describe(__filename, () => {
           message: 'must be <= 10'
         },
       ];
-  
-  
+
+
       try {
         outputValidationUsecase.execute({} as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
-        expect(error).toEqual(expectedError);
+        expect(error.message).toEqual(JSON.stringify(expectedError));
       }
     });
   });
