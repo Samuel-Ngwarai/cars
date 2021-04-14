@@ -10,8 +10,8 @@ export class Routes implements IRoute {
   constructor() {}
 
   public register(app: Express, carsManagementController: CarsManagementController): void {
-    app.get('/', async () => {
-      throw new Error('Uknown route called. Try "/createCar" for example')
+    app.get('/', async (req: Request, res: Response) => {
+      res.status(404).send('Uknown route called. Try "/createCar" for example')
     });
 
     app.get('/readyz', async (req: Request, res: Response) => {
@@ -26,5 +26,9 @@ export class Routes implements IRoute {
       this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
       carsManagementController.createCar.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
+
+    app.get('*',function (req: Request, res: Response) {
+      res.status(404).send('Uknown route called. Try "/createCar" for example')
+    });
   }
 }
