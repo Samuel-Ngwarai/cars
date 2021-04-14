@@ -10,4 +10,4 @@ export const OutputSchema = {
   },
   required: ['id', 'model', 'brand', 'color', 'people', 'distance'],
   additionalProperties: false,
-}
+};

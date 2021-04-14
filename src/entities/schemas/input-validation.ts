@@ -9,4 +9,4 @@ export const InputSchema = {
   },
   required: ['model', 'brand', 'color', 'people', 'distance'],
   additionalProperties: false,
-}
+};

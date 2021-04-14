@@ -35,7 +35,7 @@ export class Server {
     this.server.use(bodyparser.json());
   }
 
-  public addRoutes(routes: IRoute, carsManagementController: CarsManagementController): void {    
+  public addRoutes(routes: IRoute, carsManagementController: CarsManagementController): void {
     routes.register(this.server, carsManagementController);
   }
 
@@ -43,7 +43,13 @@ export class Server {
     this.server.use((err, req, res, next) => {
       // TODO: Extend error handler
       logger.error(err);
-      res.status(500).send('Something broke!')
-    })
+
+      const errorObject  = {
+        message: err.message,
+        stack: err.stack,
+        statusCode: err.status
+      };
+      res.status(err.status || 500).send(errorObject);
+    });
   }
 }
