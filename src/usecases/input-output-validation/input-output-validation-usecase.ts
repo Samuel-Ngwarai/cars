@@ -21,6 +21,7 @@ export class InputValidationUsecase {
       if (!valid) {
         throw this.validator?.errors;
       }
+
       next();
     } catch (error) {
       console.log('InputValidationUsecase::execute, error occured during input validation ', error);

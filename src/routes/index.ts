@@ -2,7 +2,7 @@ import { Express, Request, Response, NextFunction } from 'express';
 
 import { IRoute } from './routes-i';
 import { CarsManagementController } from '../controllers/cars-management-controller';
-import { InputValidationUsecase, OutputValidationUsecase } from '../usecases/input-output-validation/input-validation-usecase';
+import { InputValidationUsecase, OutputValidationUsecase } from '../usecases/input-output-validation/input-output-validation-usecase';
 
 export class Routes implements IRoute {
   private inputValidationUsecase = new InputValidationUsecase();
