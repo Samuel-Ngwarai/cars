@@ -20,5 +20,12 @@ describe(__filename, () => {
       expect(res.body).toEqual({ healthy: true });
       expect(res.statusCode).toEqual(200);
     });
+
+    it('/readyz should return true', async () => {
+      const res = await request(expressServer).get('/readyz');
+
+      expect(res.body).toEqual({ ready: true });
+      expect(res.statusCode).toEqual(200);
+    });
   });
 });

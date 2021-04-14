@@ -1,4 +1,6 @@
 import express, { Express } from 'express';
+import bodyparser from 'body-parser';
+
 import { IRoute } from '../routes/routes-i';
 
 const port = 3000;
@@ -25,7 +27,19 @@ export class Server {
     return this.server;
   }
 
+  public addExtensions() {
+    this.server.use(bodyparser.json());
+  }
+
   public addRoutes(routes: IRoute): void {
     routes.register(this.server);
+  }
+
+  public addErrorHandler() {
+    this.server.use((err, req, res, next) => {
+      // TODO: Extend error handler
+      console.error(err);
+      res.status(500).send('Something broke!')
+    })
   }
 }

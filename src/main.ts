@@ -12,9 +12,12 @@ export default class App {
     this.server = new Server();
 
     const routes = new Routes();
+    this.server.addExtensions();
     this.server.addRoutes(routes);
+    this.server.addErrorHandler();
 
     this.expressServer = await this.server.init(this.listen);
+
     console.log('App::init - Application started');
   }
 }

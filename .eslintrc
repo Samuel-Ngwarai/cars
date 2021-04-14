@@ -9,6 +9,8 @@
     "sourceType": "module"
   },
   "rules": {
-      "quotes": ["error", "single"]
+      "quotes": ["error", "single"],
+      "indent": ["error", 2],
+      "object-curly-spacing": ["error", "always"]
   }
 }

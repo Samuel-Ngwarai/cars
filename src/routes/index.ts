@@ -1,24 +1,34 @@
-import { Express } from 'express';
+import { Express, Request, Response, NextFunction } from 'express';
+
 import { IRoute } from './routes-i';
+import { CarsManagementController } from '../controllers/cars-management-controller';
+import { Car } from '../entities/car';
 
 export class Routes implements IRoute {
+  private carsManagementController = new CarsManagementController();
   constructor() {}
 
   public register(app: Express): void {
-    app.get('/readyz', async (req: any, res: any) => {
-      console.log(req.body);
+    app.get('/', async () => {
+      throw new Error('Uknown route called. Try "/createCar" for example')
+    });
+
+    app.get('/readyz', async (req: Request, res: Response) => {
       res.json({ ready: true });
     });
 
-    app.get('/healthz', async (req: any, res: any) => {
-      console.log('ReqBody  - ', req.body);
+    app.get('/healthz', async (req: Request, res: Response) => {
       res.json({ healthy: true });
     });
 
-    app.get('/', async (req: any, res: any) => {
-      console.log('Handle default route');
-      console.log('Reqbody', req.body);
-      res.json('handle default route');
+    app.post('/createCar', async (req: Request, res: Response, next: NextFunction) => {
+      let newCar: Car;
+      try {
+        newCar = await this.carsManagementController.createCar(req.body);
+      } catch (error) {
+        next(error);
+      }
+      res.json(newCar);
     });
   }
 }
