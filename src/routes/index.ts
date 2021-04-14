@@ -2,13 +2,14 @@ import { Express, Request, Response, NextFunction } from 'express';
 
 import { IRoute } from './routes-i';
 import { CarsManagementController } from '../controllers/cars-management-controller';
-import { Car } from '../entities/car';
+import { InputValidationUsecase, OutputValidationUsecase } from '../usecases/input-output-validation/input-output-validation-usecase';
 
 export class Routes implements IRoute {
-  private carsManagementController = new CarsManagementController();
+  private inputValidationUsecase = new InputValidationUsecase();
+  private outputValidationUsecase = new OutputValidationUsecase();
   constructor() {}
 
-  public register(app: Express): void {
+  public register(app: Express, carsManagementController: CarsManagementController): void {
     app.get('/', async () => {
       throw new Error('Uknown route called. Try "/createCar" for example')
     });
@@ -21,14 +22,9 @@ export class Routes implements IRoute {
       res.json({ healthy: true });
     });
 
-    app.post('/createCar', async (req: Request, res: Response, next: NextFunction) => {
-      let newCar: Car;
-      try {
-        newCar = await this.carsManagementController.createCar(req.body);
-      } catch (error) {
-        next(error);
-      }
-      res.json(newCar);
-    });
+    app.post('/createCar', 
+      this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
+      carsManagementController.createCar.bind(carsManagementController),
+      this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
   }
 }

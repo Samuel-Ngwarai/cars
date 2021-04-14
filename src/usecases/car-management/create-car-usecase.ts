@@ -3,7 +3,7 @@ import { Car, CreateCarMetadata } from '../../entities/car';
 export class CreateCarUsecase {
   constructor() {}
 
-  public async execute(data: CreateCarMetadata): Promise<Car> {
+  public execute(data: CreateCarMetadata): Car {
     console.log('CreateCarUsecase::execute')
     try {
       const { model, color, brand } = data;
