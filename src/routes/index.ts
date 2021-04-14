@@ -14,12 +14,10 @@ export class Routes implements IRoute {
     });
 
     app.get('/readyz', async (req: Request, res: Response) => {
-      console.log(req.body);
       res.json({ ready: true });
     });
 
     app.get('/healthz', async (req: Request, res: Response) => {
-      console.log('ReqBody  - ', req.body);
       res.json({ healthy: true });
     });
 
