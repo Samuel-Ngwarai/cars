@@ -1,8 +1,12 @@
+process.env.NODE_CONFIG_DIR = require('path').resolve(__dirname, 'config');
 import { Express } from 'express';
 import { Server } from './server';
 
 import { CarsManagementController } from './controllers/cars-management-controller';
 import { Routes } from './routes';
+
+import { logger } from './utils/logger';
+
 export default class App {
   public expressServer: Express;
   private server: Server;
@@ -21,7 +25,7 @@ export default class App {
 
     this.expressServer = await this.server.init(this.listen);
 
-    console.log('App::init - Application started');
+    logger.info('App::init - Application started');
   }
 }
 

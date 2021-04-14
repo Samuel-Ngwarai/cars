@@ -1,12 +1,15 @@
 import express, { Express } from 'express';
 import bodyparser from 'body-parser';
+import config from 'config';
 
 import { CarsManagementController } from '../controllers/cars-management-controller';
 import { IRoute } from '../routes/routes-i';
 
-const port = 3000;
+import { logger } from '../utils/logger';
+
 export class Server {
   private server: Express;
+  private port = config.get('PORT');
 
   public constructor() {
     this.server = express();
@@ -15,13 +18,13 @@ export class Server {
   public async init(listen: boolean): Promise<Express> {
     try {
       if (listen) {
-        await this.server.listen(port);
+        await this.server.listen(this.port);
       }
-      console.log('Server::init - Server running at:', {
-        uri: `localhost:${port}`,
+      logger.info('Server::init - Server running at:', {
+        uri: `localhost:${this.port}`,
       });
     } catch (error) {
-      console.error('Server::init - Server failed to start', { error });
+      logger.error('Server::init - Server failed to start', { error });
       process.exit(1);
     }
 
@@ -39,7 +42,7 @@ export class Server {
   public addErrorHandler() {
     this.server.use((err, req, res, next) => {
       // TODO: Extend error handler
-      console.error(err);
+      logger.error(err);
       res.status(500).send('Something broke!')
     })
   }
