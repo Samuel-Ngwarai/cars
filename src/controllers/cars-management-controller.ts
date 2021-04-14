@@ -9,7 +9,7 @@ export class CarsManagementController {
     private createCarUsecase = new CreateCarUsecase();
     constructor() {}
 
-    public async createCar(req: Request, res: Response, next: NextFunction): Promise<Car> {
+    public async createCar(req: Request, res: Response, next: NextFunction): Promise<void> {
       logger.info('CarsManagementController::createCar')
       try {
         const { model, brand, color, people, distance } = req.body;
@@ -17,7 +17,6 @@ export class CarsManagementController {
         const newCar = this.createCarUsecase.execute(createCarData);
 
         res.locals = newCar;
-
         return next();
       } catch (error) {
         logger.error('CarsManagementController::createCar, error occurred during car creation');

@@ -129,9 +129,9 @@ describe(__filename, () => {
           distance: 5000
         },
         json: () => {}
-      } as Request;
+      } as unknown as Request;
 
-      outputValidationUsecase.execute({} as Request, mockResponse as Response, mockNext as NextFunction);
+      outputValidationUsecase.execute({} as Request, mockResponse as unknown as Response, mockNext as NextFunction);
     });
 
     // TODO: similar test cases can be compressed with test.each
@@ -142,7 +142,7 @@ describe(__filename, () => {
           brand: 'someBrand',
           color: 'someColor'
         },
-      } as Request;
+      } as unknown as Request;
 
       const expectedError = [
         {
@@ -155,7 +155,7 @@ describe(__filename, () => {
       ]
 
       try {
-        outputValidationUsecase.execute({} as Request, mockResponse as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({} as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error).toEqual(expectedError);
@@ -174,7 +174,7 @@ describe(__filename, () => {
           distance: 5000,
           additional: 'additionalProperty'
         },
-      } as Request;
+      } as unknown as  Request;
   
       const expectedError =  [
         {
@@ -188,7 +188,7 @@ describe(__filename, () => {
   
   
       try {
-        outputValidationUsecase.execute({} as Request, mockResponse as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({} as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error).toEqual(expectedError);
@@ -207,7 +207,7 @@ describe(__filename, () => {
           distance: -1
 
         },
-      } as Request;
+      } as unknown as  Request;
   
       const expectedError =  [
         {
@@ -221,7 +221,7 @@ describe(__filename, () => {
   
   
       try {
-        outputValidationUsecase.execute({} as Request, mockResponse as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({} as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error).toEqual(expectedError);
