@@ -1,4 +1,5 @@
 export = {
   PORT: 'PORT',
   LOG_LEVEL: 'LOG_LEVEL',
+  MONGODB_URL: 'MONGODB_URL',
 };
