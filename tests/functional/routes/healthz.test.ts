@@ -8,7 +8,7 @@ describe(__filename, () => {
 
   beforeAll(async () => {
     app = new App(false);
-    await app.init();
+    await app.init(false);
 
     expressServer = app.expressServer;
   });
