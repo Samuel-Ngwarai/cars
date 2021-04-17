@@ -45,14 +45,14 @@
   },
   "scripts": {
     "start": "node build/src/main.js",
-    "start:mongodb": "docker-compose run -d mongodb_container",
+    "start:mongodb": "docker-compose run -d --service-ports mongodb_container",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" \"tsc -w -p tsconfig.release.json\" \"nodemon build/src/main.js --delay 1\"",
     "clean": "rimraf coverage build tmp",
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
-    "test": "NODE_CONFIG_DIR=$(pwd)/src/config jest --coverage",
+    "test": "npm run start:mongodb && NODE_CONFIG_DIR=$(pwd)/src/config jest --coverage --verbose",
     "test:watch": "jest --watch"
   },
   "author": "Samuel Ngwarai",

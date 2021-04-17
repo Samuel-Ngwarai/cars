@@ -26,8 +26,5 @@ jobs:
       - name: Run Linter
         run: npm run lint
 
-      - name: Start MongoDB
-        run: npm run start:mongodb
-
       - name: Run tests
         run: npm run test
