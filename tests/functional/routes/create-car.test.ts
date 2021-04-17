@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import request from 'supertest';
 import * as uuid from 'uuid';
+import mongoose from 'mongoose';
 
 import { CreateCarMetadata } from '../../../src/entities/car';
 import App from '../../../src/main';
@@ -13,11 +14,15 @@ describe(__filename, () => {
 
   beforeAll(async () => {
     app = new App(false);
-    await app.init();
+    await app.init(true);
 
     expressServer = app.expressServer;
     const uuidSpy = jest.spyOn(uuid, 'v4');
     uuidSpy.mockReturnValue('mocked_uuid');
+  });
+
+  afterAll(() => {
+    mongoose.disconnect();
   });
 
   describe('GET', () => {

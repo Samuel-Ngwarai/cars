@@ -3,6 +3,7 @@ import { Express } from 'express';
 import { Server } from './server';
 
 import { CarsManagementController } from './controllers/cars-management-controller';
+import { MongoDBService } from './services/mongodb-service';
 import { Routes } from './routes';
 
 import { logger } from './utils/logger';
@@ -13,10 +14,15 @@ export default class App {
 
   public constructor(private readonly listen: boolean) {}
 
-  public async init(): Promise<void> {
+  public async init(initializeDBConnection: boolean): Promise<void> {
     this.server = new Server();
 
-    const carsManagementController = new CarsManagementController();
+    const mongoDBService = new MongoDBService();
+    if (initializeDBConnection) {
+      await mongoDBService.initializeDBConnection();
+    }
+
+    const carsManagementController = new CarsManagementController(mongoDBService);
     const routes = new Routes();
 
     this.server.addExtensions();
@@ -31,5 +37,5 @@ export default class App {
 
 if (require.main === module) {
   const app = new App(true);
-  app.init();
+  app.init(true);
 }

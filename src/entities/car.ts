@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import mongoose from 'mongoose';
 
 export type CreateCarMetadata = {
     color: string;
@@ -30,3 +31,12 @@ export class Car {
     return instance;
   }
 }
+
+export const MongooseCarSchema = new mongoose.Schema({
+  id: String,
+  color: String,
+  model: String,
+  brand: String,
+  people: String,
+  distance: String,
+});
