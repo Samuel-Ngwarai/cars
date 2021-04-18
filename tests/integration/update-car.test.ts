@@ -26,19 +26,18 @@ describe(__filename, () => {
     uuidSpy.mockReturnValue('mocked_uuid');
 
     // clean database
-    await mongoDBDatabase['CarModel'].remove({});
+    await mongoDBDatabase['CarModel'].deleteMany({});
   });
 
   afterAll(async() => {
     // clean database
-    await mongoDBDatabase['CarModel'].remove({});
-
-    mongoose.disconnect();
+    await mongoDBDatabase['CarModel'].deleteMany({});
+    await mongoose.disconnect();
   });
 
   describe('GET', () => {
 
-    beforeAll(async () => {
+    beforeAll(async (done) => {
       const requestBody: CreateCarMetadata = {
         model: 'someModel',
         color: 'someColor',
@@ -47,6 +46,10 @@ describe(__filename, () => {
         distance: 5000
       };
       await request(expressServer).post('/createCar').send(requestBody);
+      // wait till items are in database to avoid race condition
+      setTimeout(() => {
+        done();
+      }, 1000);
     });
 
     it('/updateCar should update Existing Car', async () => {

@@ -20,3 +20,8 @@ export const UpdateCarResponseSchema = {
   required: ['message'],
   additionalProperties: false,
 };
+
+export const GetCarsResponseSchema = {
+  type: 'array',
+  items: CreateCarResponseSchema
+};

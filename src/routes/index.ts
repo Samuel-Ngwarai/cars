@@ -32,6 +32,11 @@ export class Routes implements IRoute {
       carsManagementController.updateCar.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
 
+    app.get('/getCars',
+      this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
+      carsManagementController.getCars.bind(carsManagementController),
+      this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
+
     app.get('*',function (req: Request, res: Response) {
       res.status(404).send('Uknown route called. Try "/createCar" for example');
     });
