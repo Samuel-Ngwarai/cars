@@ -17,16 +17,16 @@ export class Car {
   public people: number;
   public distance: number;
 
-  public static create(data: CreateCarMetadata): Car {
-    const { color, brand, model, people, distance } = data;
+  public static create(data: CreateCarMetadata & { id?: string }): Car {
+    const { color, brand, model, people, distance, id } = data;
     const instance = new Car();
 
-    instance.id = uuidv4();
+    instance.id = id || uuidv4();
     instance.color = color;
     instance.model = model;
     instance.brand = brand;
-    instance.people = people;
-    instance.distance = distance;
+    instance.people = Number(people);
+    instance.distance = Number(distance);
 
     return instance;
   }

@@ -12,7 +12,7 @@ describe(__filename, () => {
     it('should correctly validate input', () => {
 
       const mockRequest = {
-        originalUrl: '/updateCar',
+        path: '/updateCar',
         body: {
           id: 'SomeUuid',
           model: 'someModel',
@@ -27,7 +27,7 @@ describe(__filename, () => {
     it('should fail on input with missing car id', () => {
 
       const mockRequest = {
-        originalUrl: '/updateCar',
+        path: '/updateCar',
         body: {
           brand: 'someBrand',
           color: 'someColor'
@@ -55,7 +55,7 @@ describe(__filename, () => {
     it('should fail on input with additional properties', () => {
 
       const mockRequest = {
-        originalUrl: '/updateCar',
+        path: '/updateCar',
         body: {
           id: 'someUUID',
           model: 'someModel',
@@ -90,7 +90,7 @@ describe(__filename, () => {
     it('should fail on invalid input', () => {
 
       const mockRequest = {
-        originalUrl: '/updateCar',
+        path: '/updateCar',
         body: {
           id: 'someUUID',
           color: 'someColor',
@@ -124,12 +124,14 @@ describe(__filename, () => {
 
       const mockResponse = {
         locals: {
-          message: 'Update Successful'
+          response: {
+            message: 'Update Successful'
+          }
         },
         json: () => {}
       } as unknown as Request;
 
-      outputValidationUsecase.execute({ originalUrl: '/updateCar' } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
+      outputValidationUsecase.execute({ path: '/updateCar' } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
     });
 
     // TODO: similar test cases can be compressed with test.each
@@ -137,6 +139,7 @@ describe(__filename, () => {
 
       const mockResponse = {
         locals: {
+          response: {}
         },
       } as unknown as Request;
 
@@ -151,7 +154,7 @@ describe(__filename, () => {
       ];
 
       try {
-        outputValidationUsecase.execute({ originalUrl: '/updateCar' } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({ path: '/updateCar' } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error.message).toEqual(JSON.stringify(expectedError));
@@ -162,8 +165,10 @@ describe(__filename, () => {
 
       const mockResponse = {
         locals: {
-          message: 'update Successful',
-          additional: 'additionalProperty'
+          response: {
+            message: 'update Successful',
+            additional: 'additionalProperty'
+          }
         },
       } as unknown as  Request;
 
@@ -179,7 +184,7 @@ describe(__filename, () => {
 
 
       try {
-        outputValidationUsecase.execute({ originalUrl: '/updateCar' } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({ path: '/updateCar' } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error.message).toEqual(JSON.stringify(expectedError));
@@ -190,7 +195,9 @@ describe(__filename, () => {
 
       const mockResponse = {
         locals: {
-          message: 4
+          response: {
+            message: 4
+          }
         },
       } as unknown as  Request;
 
@@ -206,7 +213,7 @@ describe(__filename, () => {
 
 
       try {
-        outputValidationUsecase.execute({ originalUrl: '/updateCar' } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({ path: '/updateCar' } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error.message).toEqual(JSON.stringify(expectedError));

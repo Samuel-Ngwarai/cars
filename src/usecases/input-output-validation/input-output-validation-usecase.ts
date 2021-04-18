@@ -2,8 +2,8 @@ import Ajv from 'ajv';
 import { Request, Response, NextFunction } from 'express';
 import { GeneralError } from '../../entities/error';
 
-import { CreateCarSchema, UpdateCarSchema } from '../../entities/schemas/input-validation';
-import { CreateCarResponseSchema, UpdateCarResponseSchema } from '../../entities/schemas/output-validation';
+import { CreateCarSchema, UpdateCarSchema, GetCarsSchema } from '../../entities/schemas/input-validation';
+import { CreateCarResponseSchema, UpdateCarResponseSchema, GetCarsResponseSchema } from '../../entities/schemas/output-validation';
 
 import { logger } from '../../utils/logger';
 
@@ -19,13 +19,15 @@ export class InputValidationUsecase {
     try {
 
       let schema;
-
-      switch(req.originalUrl) {
+      switch(req.path) {
       case '/createCar':
         schema = CreateCarSchema;
         break;
       case '/updateCar':
         schema = UpdateCarSchema;
+        break;
+      case '/getCars':
+        schema = GetCarsSchema;
         break;
       default:
         throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });
@@ -60,12 +62,15 @@ export class OutputValidationUsecase {
 
       let schema;
 
-      switch(req.originalUrl) {
+      switch(req.path) {
       case '/createCar':
         schema = CreateCarResponseSchema;
         break;
       case '/updateCar':
         schema = UpdateCarResponseSchema;
+        break;
+      case '/getCars':
+        schema = GetCarsResponseSchema;
         break;
       default:
         throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });
@@ -73,12 +78,12 @@ export class OutputValidationUsecase {
 
       const validator = this.ajv.compile(schema);
 
-      const valid = validator(res?.locals);
+      const valid = validator(res?.locals?.response);
 
       if (!valid) {
         throw validator?.errors;
       }
-      res.json(res?.locals);
+      res.json(res?.locals?.response);
     } catch (error) {
       logger.error('OutputValidationUsecase::execute, error occured during output validation ', error);
       throw new GeneralError({ message: JSON.stringify(error), status: 422 });

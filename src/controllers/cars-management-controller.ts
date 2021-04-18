@@ -21,7 +21,7 @@ export class CarsManagementController {
 
         await this.storeCarUsecase.execute(newCar);
 
-        res.locals = newCar;
+        res.locals = { response: newCar };
         return next();
       } catch (error) {
         logger.error('CarsManagementController::createCar, error occurred during car creation');
@@ -37,11 +37,27 @@ export class CarsManagementController {
 
         await this.database.update(updateCarData);
 
-        res.locals = { message: 'Update Successful' };
+        res.locals = { response: { message: 'Update Successful' } };
 
         return next();
       } catch (error) {
         logger.error('CarsManagementController::updateCar, error occurred during car update');
+        return next(error);
+      }
+    }
+
+    public async getCars(req: Request, res: Response, next: NextFunction): Promise<void> {
+      logger.info('CarsManagementController::getCars');
+      try {
+        const { id } = req.query as { id: string };
+
+        const cars = await this.database.get(id);
+
+        res.locals = { response: cars };
+
+        return next();
+      } catch (error) {
+        logger.error('CarsManagementController::getCars, error occurred during car update');
         return next(error);
       }
     }

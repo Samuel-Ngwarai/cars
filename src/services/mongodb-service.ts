@@ -40,8 +40,18 @@ export class MongoDBService implements IDatabaseService {
     });
   }
 
+  private async existsInDatabase(id: string): Promise<boolean> {
+    const carExists = await this.CarModel.exists({ id });
+
+    if (!carExists) {
+      throw new Error(`Car with id ${id} does not exist in the database`);
+    }
+
+    return true;
+  }
+
   public async store(car: Car): Promise<void>{
-    logger.debug('MongoDBService::store');
+    logger.debug(`MongoDBService::store with id ${car.id}`);
     try {
       const newCar = new this.CarModel(car);
       await newCar.save();
@@ -52,9 +62,9 @@ export class MongoDBService implements IDatabaseService {
   }
 
   public async update(car: Car): Promise<void> {
-    logger.debug('MongoDBService::update');
+    logger.debug(`MongoDBService::update with id ${car.id}`);
     try {
-      let itemsToUpdate: any = {
+      let itemsToUpdate = {
         model: car.model,
         brand: car.brand,
         people: car.people,
@@ -62,11 +72,7 @@ export class MongoDBService implements IDatabaseService {
         color: car.color,
       };
 
-      const carExists = await this.CarModel.exists({ id: car.id });
-
-      if (!carExists) {
-        throw new Error(`Car with id ${car.id} does not exist in the database`);
-      }
+      await this.existsInDatabase(car.id);
 
       Object.keys(itemsToUpdate).forEach(key => itemsToUpdate[key] === undefined && delete itemsToUpdate[key]);
 
@@ -78,6 +84,31 @@ export class MongoDBService implements IDatabaseService {
 
     } catch (error) {
       logger.error('MongoDBService::update, error occured whilst updating existing Car', error);
+      throw new GeneralError({ message: error.message });
+    }
+  }
+
+  public async get(id: string): Promise<Car[]>{
+    logger.debug(`MongoDBService::get with id ${id}`);
+    try {
+
+      let cars;
+
+      if (id) {
+        await this.existsInDatabase(id);
+
+        cars = await this.CarModel.find({ id });
+      } else {
+        cars = await this.CarModel.find({});
+      }
+
+      cars =  cars.map((storedCar) => {
+        return Car.create(storedCar);
+      });
+
+      return cars;
+    } catch (error) {
+      logger.error('MongoDBService::get, error occured whilst getting car', error);
       throw new GeneralError({ message: error.message });
     }
   }

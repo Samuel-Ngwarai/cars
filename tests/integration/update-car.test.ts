@@ -56,10 +56,14 @@ describe(__filename, () => {
         people: 2,
         distance: 5000
       };
-      const res = await request(expressServer).put('/updateCar').send(requestBody);;
 
-      expect(res.body).toEqual({ message: 'Update Successful' });
-      expect(res.statusCode).toEqual(200);
+      // wait for database store to be finish
+      setTimeout(async () => {
+        const res = await request(expressServer).put('/updateCar').send(requestBody);;
+
+        expect(res.body).toEqual({ message: 'Update Successful' });
+        expect(res.statusCode).toEqual(200);
+      }, 1000);
     });
 
     it('/updateCar should fail for invalid input', async () => {
