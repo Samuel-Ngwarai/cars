@@ -12,7 +12,7 @@ export const CreateCarResponseSchema = {
   additionalProperties: false,
 };
 
-export const UpdateCarResponseSchema = {
+export const ResponseMessageSchema = {
   type: 'object',
   properties: {
     message: { type: 'string' }

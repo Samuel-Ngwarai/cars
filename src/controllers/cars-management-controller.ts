@@ -57,7 +57,23 @@ export class CarsManagementController {
 
         return next();
       } catch (error) {
-        logger.error('CarsManagementController::getCars, error occurred during car update');
+        logger.error('CarsManagementController::getCars, error occurred during car retrieval');
+        return next(error);
+      }
+    }
+
+    public async deleteCar(req: Request, res: Response, next: NextFunction): Promise<void> {
+      logger.info('CarsManagementController::deleteCar');
+      try {
+        const { id } = req.body;
+
+        await this.database.delete(id);
+
+        res.locals = { response: { message: 'Deletion Successful' } };
+
+        return next();
+      } catch (error) {
+        logger.error('CarsManagementController::deleteCar, error occurred during car deletion');
         return next(error);
       }
     }

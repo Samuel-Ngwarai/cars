@@ -2,8 +2,8 @@ import Ajv from 'ajv';
 import { Request, Response, NextFunction } from 'express';
 import { GeneralError } from '../../entities/error';
 
-import { CreateCarSchema, UpdateCarSchema } from '../../entities/schemas/input-validation';
-import { CreateCarResponseSchema, UpdateCarResponseSchema, GetCarsResponseSchema } from '../../entities/schemas/output-validation';
+import { CreateCarSchema, UpdateCarSchema, DeleteCarSchema } from '../../entities/schemas/input-validation';
+import { CreateCarResponseSchema, ResponseMessageSchema, GetCarsResponseSchema } from '../../entities/schemas/output-validation';
 
 import { logger } from '../../utils/logger';
 
@@ -29,6 +29,9 @@ export class InputValidationUsecase {
         break;
       case '/updateCar':
         schema = UpdateCarSchema;
+        break;
+      case '/deleteCar':
+        schema = DeleteCarSchema;
         break;
       default:
         throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });
@@ -68,10 +71,13 @@ export class OutputValidationUsecase {
         schema = CreateCarResponseSchema;
         break;
       case '/updateCar':
-        schema = UpdateCarResponseSchema;
+        schema = ResponseMessageSchema;
         break;
       case '/getCars':
         schema = GetCarsResponseSchema;
+        break;
+      case '/deleteCar':
+        schema = ResponseMessageSchema;
         break;
       default:
         throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });
