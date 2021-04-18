@@ -1,6 +1,6 @@
 {
   "name": "cars",
-  "version": "0.0.1",
+  "version": "0.0.2-rc1",
   "description": "Cars management factory",
   "engines": {
     "node": "12.22.1"
