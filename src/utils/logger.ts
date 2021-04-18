@@ -1,7 +1,7 @@
 import config from 'config';
 import { createLogger, LoggerOptions, transports, format } from 'winston';
 
-const { version } = require('../../package.json'); // eslint-disable-line @typescript-eslint/no-var-requires
+const version = process.env.npm_package_version;
 
 const logLevel: string = config.get('LOG_LEVEL');
 
