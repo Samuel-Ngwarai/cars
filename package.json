@@ -53,7 +53,7 @@
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
-    "test": "npm run start:mongodb && NODE_CONFIG_DIR=$(pwd)/src/config jest --coverage --verbose",
+    "test": "npm run start:mongodb && NODE_CONFIG_DIR=$(pwd)/src/config jest --coverage --verbose --runInBand",
     "test:watch": "jest --watch"
   },
   "author": "Samuel Ngwarai",

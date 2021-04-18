@@ -2,7 +2,7 @@ import Ajv from 'ajv';
 import { Request, Response, NextFunction } from 'express';
 import { GeneralError } from '../../entities/error';
 
-import { CreateCarSchema, UpdateCarSchema, GetCarsSchema } from '../../entities/schemas/input-validation';
+import { CreateCarSchema, UpdateCarSchema } from '../../entities/schemas/input-validation';
 import { CreateCarResponseSchema, UpdateCarResponseSchema, GetCarsResponseSchema } from '../../entities/schemas/output-validation';
 
 import { logger } from '../../utils/logger';
@@ -17,6 +17,10 @@ export class InputValidationUsecase {
     logger.debug('InputValidationUsecase::execute');
 
     try {
+      if (req.path === '/getCars') {
+        logger.info(`InputValidationUsecase::execute, skipping input validation for ${req.path}`);
+        return next();
+      }
 
       let schema;
       switch(req.path) {
@@ -25,9 +29,6 @@ export class InputValidationUsecase {
         break;
       case '/updateCar':
         schema = UpdateCarSchema;
-        break;
-      case '/getCars':
-        schema = GetCarsSchema;
         break;
       default:
         throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });

@@ -24,7 +24,3 @@ export const UpdateCarSchema = {
   required: ['id'],
   additionalProperties: false,
 };
-
-export const GetCarsSchema = {
-  additionalProperties: false,
-};

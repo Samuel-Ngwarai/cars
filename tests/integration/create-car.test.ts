@@ -14,7 +14,7 @@ describe(__filename, () => {
   let expressServer: Express;
   let mongoDBDatabase: MongoDBService;
 
-  beforeAll(async () => {
+  beforeAll(async (done) => {
     app = new App(false);
     await app.init(true);
 
@@ -24,14 +24,14 @@ describe(__filename, () => {
     uuidSpy.mockReturnValue('mocked_uuid');
 
     // clean database
-    await mongoDBDatabase['CarModel'].remove({});
+    await mongoDBDatabase['CarModel'].deleteMany({});
+    done();
   });
 
   afterAll(async() => {
 
-    await mongoDBDatabase['CarModel'].remove({});
-
-    mongoose.disconnect();
+    await mongoDBDatabase['CarModel'].deleteMany({});
+    await mongoose.disconnect();
   });
 
   describe('GET', () => {
