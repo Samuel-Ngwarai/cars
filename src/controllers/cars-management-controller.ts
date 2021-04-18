@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { CreateCarMetadata } from '../entities/car';
+import { CreateCarMetadata, Car } from '../entities/car';
 import { IDatabaseService } from '../entities/database-i';
 
 import { CreateCarUsecase } from '../usecases/car-management/create-car-usecase';
@@ -25,6 +25,23 @@ export class CarsManagementController {
         return next();
       } catch (error) {
         logger.error('CarsManagementController::createCar, error occurred during car creation');
+        return next(error);
+      }
+    }
+
+    public async updateCar(req: Request, res: Response, next: NextFunction): Promise<void> {
+      logger.info('CarsManagementController::updateCar');
+      try {
+        const { id, model, brand, color, people, distance } = req.body;
+        const updateCarData: Car = { id, model, brand, color, people, distance };
+
+        await this.database.update(updateCarData);
+
+        res.locals = { message: 'Update Successful' };
+
+        return next();
+      } catch (error) {
+        logger.error('CarsManagementController::updateCar, error occurred during car update');
         return next(error);
       }
     }

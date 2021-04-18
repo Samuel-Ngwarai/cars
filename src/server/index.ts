@@ -41,7 +41,6 @@ export class Server {
 
   public addErrorHandler() {
     this.server.use((err, req, res, next) => {
-      // TODO: Extend error handler
       logger.error(err);
 
       const errorObject  = {

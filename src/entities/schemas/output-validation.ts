@@ -1,4 +1,4 @@
-export const OutputSchema = {
+export const CreateCarResponseSchema = {
   type: 'object',
   properties: {
     id: { type: 'string' },
@@ -9,5 +9,14 @@ export const OutputSchema = {
     distance: { type: 'number', minimum: 0 }
   },
   required: ['id', 'model', 'brand', 'color', 'people', 'distance'],
+  additionalProperties: false,
+};
+
+export const UpdateCarResponseSchema = {
+  type: 'object',
+  properties: {
+    message: { type: 'string' }
+  },
+  required: ['message'],
   additionalProperties: false,
 };
