@@ -50,4 +50,35 @@ export class MongoDBService implements IDatabaseService {
       throw new GeneralError({ message: error.message });
     }
   }
+
+  public async update(car: Car): Promise<void> {
+    logger.debug('MongoDBService::update');
+    try {
+      let itemsToUpdate: any = {
+        model: car.model,
+        brand: car.brand,
+        people: car.people,
+        distance: car.distance,
+        color: car.color,
+      };
+
+      const carExists = await this.CarModel.exists({ id: car.id });
+
+      if (!carExists) {
+        throw new Error(`Car with id ${car.id} does not exist in the database`);
+      }
+
+      Object.keys(itemsToUpdate).forEach(key => itemsToUpdate[key] === undefined && delete itemsToUpdate[key]);
+
+      const updated = await this.CarModel.findOneAndUpdate({ id: car.id }, itemsToUpdate, { upsert: false });
+
+      if (!updated) {
+        throw new Error('Database update unsuccessful');
+      }
+
+    } catch (error) {
+      logger.error('MongoDBService::update, error occured whilst updating existing Car', error);
+      throw new GeneralError({ message: error.message });
+    }
+  }
 }

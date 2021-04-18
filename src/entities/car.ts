@@ -33,10 +33,10 @@ export class Car {
 }
 
 export const MongooseCarSchema = new mongoose.Schema({
-  id: String,
-  color: String,
-  model: String,
-  brand: String,
-  people: String,
-  distance: String,
+  id: { type : String, unique : true, required : true, dropDups: true },
+  color: { type : String, required : true },
+  model: { type : String, required : true },
+  brand: { type : String, required : true },
+  people: { type : String, required : true },
+  distance: { type : String, required : true }
 });

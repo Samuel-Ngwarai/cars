@@ -3,25 +3,34 @@ import request from 'supertest';
 import * as uuid from 'uuid';
 import mongoose from 'mongoose';
 
-import { CreateCarMetadata } from '../../../src/entities/car';
-import App from '../../../src/main';
+import { CreateCarMetadata } from '../../src/entities/car';
+import App from '../../src/main';
+import { MongoDBService } from '../../src/services/mongodb-service';
 
 jest.mock('uuid');
 
 describe(__filename, () => {
   let app: App;
   let expressServer: Express;
+  let mongoDBDatabase: MongoDBService;
 
   beforeAll(async () => {
     app = new App(false);
     await app.init(true);
 
     expressServer = app.expressServer;
+    mongoDBDatabase = app.mongoDBService;
     const uuidSpy = jest.spyOn(uuid, 'v4');
     uuidSpy.mockReturnValue('mocked_uuid');
+
+    // clean database
+    await mongoDBDatabase['CarModel'].remove({});
   });
 
-  afterAll(() => {
+  afterAll(async() => {
+
+    await mongoDBDatabase['CarModel'].remove({});
+
     mongoose.disconnect();
   });
 

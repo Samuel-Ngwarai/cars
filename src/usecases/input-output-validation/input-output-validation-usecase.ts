@@ -2,27 +2,41 @@ import Ajv from 'ajv';
 import { Request, Response, NextFunction } from 'express';
 import { GeneralError } from '../../entities/error';
 
-import { InputSchema } from '../../entities/schemas/input-validation';
-import { OutputSchema } from '../../entities/schemas/output-validation';
+import { CreateCarSchema, UpdateCarSchema } from '../../entities/schemas/input-validation';
+import { CreateCarResponseSchema, UpdateCarResponseSchema } from '../../entities/schemas/output-validation';
 
 import { logger } from '../../utils/logger';
 
 export class InputValidationUsecase {
   private ajv;
-  private validator;
   constructor() {
     this.ajv = new Ajv();
-    this.validator = this.ajv.compile(InputSchema);
   }
 
   public execute(req: Request, res: Response, next: NextFunction) {
     logger.debug('InputValidationUsecase::execute');
 
     try {
-      const valid = this.validator(req?.body);
+
+      let schema;
+
+      switch(req.originalUrl) {
+      case '/createCar':
+        schema = CreateCarSchema;
+        break;
+      case '/updateCar':
+        schema = UpdateCarSchema;
+        break;
+      default:
+        throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });
+      }
+
+      const validator = this.ajv.compile(schema);
+
+      const valid = validator(req?.body);
 
       if (!valid) {
-        throw this.validator?.errors;
+        throw validator?.errors;
       }
 
       next();
@@ -35,24 +49,38 @@ export class InputValidationUsecase {
 
 export class OutputValidationUsecase {
   private ajv;
-  private validator;
   constructor() {
     this.ajv = new Ajv();
-    this.validator = this.ajv.compile(OutputSchema);
   }
 
   public execute(req: Request, res: Response, next: NextFunction) {
     logger.debug('OutputValidationUsecase::execute');
 
     try {
-      const valid = this.validator(res?.locals);
+
+      let schema;
+
+      switch(req.originalUrl) {
+      case '/createCar':
+        schema = CreateCarResponseSchema;
+        break;
+      case '/updateCar':
+        schema = UpdateCarResponseSchema;
+        break;
+      default:
+        throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });
+      }
+
+      const validator = this.ajv.compile(schema);
+
+      const valid = validator(res?.locals);
 
       if (!valid) {
-        throw this.validator?.errors;
+        throw validator?.errors;
       }
       res.json(res?.locals);
     } catch (error) {
-      logger.error('OutputValidationUsecase::execute, error occured during input validation ', error);
+      logger.error('OutputValidationUsecase::execute, error occured during output validation ', error);
       throw new GeneralError({ message: JSON.stringify(error), status: 422 });
     }
   }
