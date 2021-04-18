@@ -22,23 +22,23 @@ export class Routes implements IRoute {
       res.json({ healthy: true });
     });
 
-    app.post('/createCar',
+    app.post('/car',
       this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
       carsManagementController.createCar.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
 
-    app.put('/updateCar',
+    app.put('/car',
       this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
       carsManagementController.updateCar.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
 
-    app.get('/getCars',
+    app.get('/car',
       this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
       carsManagementController.getCars.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
 
 
-    app.delete('/deleteCar',
+    app.delete('/car',
       this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
       carsManagementController.deleteCar.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));

@@ -35,7 +35,7 @@ describe(__filename, () => {
     await mongoose.disconnect();
   });
 
-  describe('GET', () => {
+  describe('POST', () => {
 
     beforeAll(async (done) => {
       const requestBody: CreateCarMetadata = {
@@ -45,27 +45,27 @@ describe(__filename, () => {
         people: 5,
         distance: 5000
       };
-      await request(expressServer).post('/createCar').send(requestBody);
+      await request(expressServer).post('/car').send(requestBody);
       // wait till items are in database to avoid race condition
       setTimeout(() => {
         done();
       }, 1000);
     });
 
-    it('/updateCar should update Existing Car', async () => {
+    it('/car should update Existing Car', async () => {
       const requestBody = {
         id: 'mocked_uuid',
         model: 'newCarModel',
         people: 2,
         distance: 5000
       };
-      const res = await request(expressServer).put('/updateCar').send(requestBody);;
+      const res = await request(expressServer).put('/car').send(requestBody);;
 
       expect(res.body).toEqual({ message: 'Update Successful' });
       expect(res.statusCode).toEqual(200);
     });
 
-    it('/updateCar should fail for invalid input', async () => {
+    it('/car should fail for invalid input', async () => {
       const requestBody = {
         id: 'mocked_uuid',
         model: 'someModel',
@@ -75,7 +75,7 @@ describe(__filename, () => {
         distance: 5000
       };
 
-      const res = await request(expressServer).put('/updateCar').send(requestBody);
+      const res = await request(expressServer).put('/car').send(requestBody);
 
       expect(res.statusCode).toEqual(422);
       expect(res.body?.message).toEqual('[{"instancePath":"/people","schemaPath":"#/properties/people/maximum","keyword":"maximum","params":{"comparison":"<=","limit":10},"message":"must be <= 10"}]');
@@ -89,7 +89,7 @@ describe(__filename, () => {
         people: 2,
         distance: 5000
       };
-      const res = await request(expressServer).put('/updateCar').send(requestBody);;
+      const res = await request(expressServer).put('/car').send(requestBody);;
 
       expect(res.statusCode).toEqual(500);
       expect(res.body?.message).toEqual(`Car with id ${id} does not exist in the database`);

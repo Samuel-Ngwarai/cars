@@ -34,7 +34,7 @@ describe(__filename, () => {
     await mongoose.disconnect();
   });
 
-  describe('GET', () => {
+  describe('DELETE', () => {
 
     beforeAll(async (done) => {
       const requestBody: CreateCarMetadata = {
@@ -45,7 +45,7 @@ describe(__filename, () => {
         distance: 5000
       };
       uuidSpy.mockReturnValue('mocked_uuid');
-      await request(expressServer).post('/createCar').send(requestBody);
+      await request(expressServer).post('/car').send(requestBody);
 
       // wait till items are in database to avoid race condition
       setTimeout(() => {
@@ -53,23 +53,23 @@ describe(__filename, () => {
       }, 1000);
     });
 
-    it('/deleteCar should delete car', async () => {
-      const res = await request(expressServer).delete('/deleteCar').send({ id: 'mocked_uuid' });
+    it('/car should delete car', async () => {
+      const res = await request(expressServer).delete('/car').send({ id: 'mocked_uuid' });
 
       expect(res.body).toEqual({ message: 'Deletion Successful' });
       expect(res.statusCode).toEqual(200);
     });
 
-    it('/deleteCar should fail for non-existing car', async () => {
-      const res = await request(expressServer).delete('/deleteCar').send({ id: 'unknownID' });
+    it('/car should fail for non-existing car', async () => {
+      const res = await request(expressServer).delete('/car').send({ id: 'unknownID' });
 
       expect(res.body?.message).toEqual('Car with id unknownID does not exist in the database');
       expect(res.statusCode).toEqual(500);
     });
 
 
-    it('/deleteCar should fail for invalid input', async () => {
-      const res = await request(expressServer).delete('/deleteCar').send({ model: 'model' });
+    it('/car should fail for invalid input', async () => {
+      const res = await request(expressServer).delete('/car').send({ model: 'model' });
 
       expect(res.body?.message).toEqual('[{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"id"},"message":"must have required property \'id\'"}]');
       expect(res.statusCode).toEqual(422);

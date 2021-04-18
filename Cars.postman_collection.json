@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "ee73fa21-569f-49e8-8d54-183b3ff0379e",
+		"name": "Cars",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Healthz",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/healthz",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"healthz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/car",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"model\": \"someModel\",\n    \"brand\": \"someBrand\",\n    \"color\": \"someColor\",\n    \"people\": 5,\n    \"distance\": 5000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/car",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"car"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/car",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"927286cc-f9f1-404d-adcd-b00a6f39403d\",\n    \"model\": \"someModel\",\n    \"brand\": \"someBrand\",\n    \"color\": \"someColor\",\n    \"people\": 5,\n    \"distance\": 5000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/car",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"car"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/car",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/car?id={{someCarID}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"car"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{someCarID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/car",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"{{someCarID}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/car",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"car"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

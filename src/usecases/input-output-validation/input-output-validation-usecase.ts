@@ -17,24 +17,24 @@ export class InputValidationUsecase {
     logger.debug('InputValidationUsecase::execute');
 
     try {
-      if (req.path === '/getCars') {
+      if (req.method === 'GET') {
         logger.info(`InputValidationUsecase::execute, skipping input validation for ${req.path}`);
         return next();
       }
 
       let schema;
-      switch(req.path) {
-      case '/createCar':
+      switch(req.method) {
+      case 'POST':
         schema = CreateCarSchema;
         break;
-      case '/updateCar':
+      case 'PUT':
         schema = UpdateCarSchema;
         break;
-      case '/deleteCar':
+      case 'DELETE':
         schema = DeleteCarSchema;
         break;
       default:
-        throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });
+        throw new GeneralError({ message: `${req.method} ${req.originalUrl} does not have a schema definition` });
       }
 
       const validator = this.ajv.compile(schema);
@@ -66,21 +66,21 @@ export class OutputValidationUsecase {
 
       let schema;
 
-      switch(req.path) {
-      case '/createCar':
+      switch(req.method) {
+      case 'POST':
         schema = CreateCarResponseSchema;
         break;
-      case '/updateCar':
+      case 'PUT':
         schema = ResponseMessageSchema;
         break;
-      case '/getCars':
+      case 'GET':
         schema = GetCarsResponseSchema;
         break;
-      case '/deleteCar':
+      case 'DELETE':
         schema = ResponseMessageSchema;
         break;
       default:
-        throw new GeneralError({ message: `${req.originalUrl} does not have a schema definition` });
+        throw new GeneralError({ message: `${req.method} ${req.originalUrl} does not have a schema definition` });
       }
 
       const validator = this.ajv.compile(schema);
