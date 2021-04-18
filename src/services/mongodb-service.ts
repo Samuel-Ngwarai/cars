@@ -112,4 +112,22 @@ export class MongoDBService implements IDatabaseService {
       throw new GeneralError({ message: error.message });
     }
   }
+
+  public async delete(id: string): Promise<void>{
+    logger.debug(`MongoDBService::delete with id ${id}`);
+    try {
+
+      await this.existsInDatabase(id);
+
+      const deleted = await this.CarModel.deleteOne({ id });
+
+      if (deleted.deletedCount == 0) {
+        throw new Error('Deletion failed in database');
+      }
+
+    } catch (error) {
+      logger.error('MongoDBService::delete, error occured whilst getting car', error);
+      throw new GeneralError({ message: error.message });
+    }
+  }
 }

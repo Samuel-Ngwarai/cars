@@ -37,6 +37,12 @@ export class Routes implements IRoute {
       carsManagementController.getCars.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
 
+
+    app.delete('/deleteCar',
+      this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
+      carsManagementController.deleteCar.bind(carsManagementController),
+      this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
+
     app.get('*',function (req: Request, res: Response) {
       res.status(404).send('Uknown route called. Try "/createCar" for example');
     });

@@ -24,3 +24,12 @@ export const UpdateCarSchema = {
   required: ['id'],
   additionalProperties: false,
 };
+
+export const DeleteCarSchema = {
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+  },
+  required: ['id'],
+  additionalProperties: false,
+};
