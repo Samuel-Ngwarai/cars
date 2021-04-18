@@ -5,23 +5,18 @@ import { InputValidationUsecase, OutputValidationUsecase } from '../../../../src
 describe(__filename, () => {
   const inputValidationUsecase = new InputValidationUsecase();
   const outputValidationUsecase = new OutputValidationUsecase();
-  const path = '/updateCar';
+  const path = '/deleteCar';
 
   const mockNext = () => {};
 
   describe('InputValidationUsecase', () => {
-
-    const correctRequestBody = {
-      id: 'SomeUuid',
-      model: 'someModel',
-      people: 5,
-      distance: 5000
-    };
     it('should correctly validate input', () => {
 
       const mockRequest = {
         path,
-        body: correctRequestBody
+        body: {
+          id: 'SomeUuid',
+        },
       } as Request;
 
       inputValidationUsecase.execute(mockRequest, {} as Response, mockNext as NextFunction);
@@ -32,8 +27,6 @@ describe(__filename, () => {
       const mockRequest = {
         path,
         body: {
-          brand: 'someBrand',
-          color: 'someColor'
         },
       } as Request;
 
@@ -60,7 +53,7 @@ describe(__filename, () => {
       const mockRequest = {
         path,
         body: {
-          ...correctRequestBody,
+          id: 'someUUID',
           additional: 'additionalProperty'
         },
       } as Request;
@@ -90,20 +83,17 @@ describe(__filename, () => {
       const mockRequest = {
         path,
         body: {
-          id: 'someUUID',
-          color: 'someColor',
-          people: 50,
-          distance: -1,
+          id: 128,
         },
       } as Request;
 
       const expectedError = [
         {
-          instancePath: '/people',
-          schemaPath: '#/properties/people/maximum',
-          keyword: 'maximum',
-          params: { comparison: '<=', limit: 10 },
-          message: 'must be <= 10'
+          instancePath: '/id',
+          schemaPath: '#/properties/id/type',
+          keyword: 'type',
+          params: { type: 'string' },
+          message: 'must be string'
         },
       ];
 
@@ -123,7 +113,7 @@ describe(__filename, () => {
       const mockResponse = {
         locals: {
           response: {
-            message: 'Update Successful'
+            message: 'Deletion Successful'
           }
         },
         json: () => {}
@@ -164,7 +154,7 @@ describe(__filename, () => {
       const mockResponse = {
         locals: {
           response: {
-            message: 'update Successful',
+            message: 'Deletion Successful',
             additional: 'additionalProperty'
           }
         },
