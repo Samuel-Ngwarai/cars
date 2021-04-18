@@ -27,7 +27,7 @@ export class Routes implements IRoute {
       carsManagementController.createCar.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
 
-    app.post('/updateCar',
+    app.put('/updateCar',
       this.inputValidationUsecase.execute.bind(this.inputValidationUsecase),
       carsManagementController.updateCar.bind(carsManagementController),
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));

@@ -22,6 +22,9 @@ describe(__filename, () => {
     mongoDBDatabase = app.mongoDBService;
     const uuidSpy = jest.spyOn(uuid, 'v4');
     uuidSpy.mockReturnValue('mocked_uuid');
+
+    // clean database
+    await mongoDBDatabase['CarModel'].remove({});
   });
 
   afterAll(async() => {

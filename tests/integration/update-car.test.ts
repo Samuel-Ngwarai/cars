@@ -24,6 +24,9 @@ describe(__filename, () => {
 
     const uuidSpy = jest.spyOn(uuid, 'v4');
     uuidSpy.mockReturnValue('mocked_uuid');
+
+    // clean database
+    await mongoDBDatabase['CarModel'].remove({});
   });
 
   afterAll(async() => {
@@ -53,7 +56,7 @@ describe(__filename, () => {
         people: 2,
         distance: 5000
       };
-      const res = await request(expressServer).post('/updateCar').send(requestBody);;
+      const res = await request(expressServer).put('/updateCar').send(requestBody);;
 
       expect(res.body).toEqual({ message: 'Update Successful' });
       expect(res.statusCode).toEqual(200);
@@ -69,7 +72,7 @@ describe(__filename, () => {
         distance: 5000
       };
 
-      const res = await request(expressServer).post('/updateCar').send(requestBody);
+      const res = await request(expressServer).put('/updateCar').send(requestBody);
 
       expect(res.statusCode).toEqual(422);
       expect(res.body?.message).toEqual('[{"instancePath":"/people","schemaPath":"#/properties/people/maximum","keyword":"maximum","params":{"comparison":"<=","limit":10},"message":"must be <= 10"}]');
@@ -83,7 +86,7 @@ describe(__filename, () => {
         people: 2,
         distance: 5000
       };
-      const res = await request(expressServer).post('/updateCar').send(requestBody);;
+      const res = await request(expressServer).put('/updateCar').send(requestBody);;
 
       expect(res.statusCode).toEqual(500);
       expect(res.body?.message).toEqual(`Car with id ${id} does not exist in the database`);
