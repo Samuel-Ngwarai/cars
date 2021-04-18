@@ -170,3 +170,4 @@ Parts of the components behaviour can be adjusted via environment variables as l
 * The logger has to be extended to support additional arguments for more ease of use in multiple parts of the code
 * GET, PUT and DELETE can be extended to support getting, updating and deleting multiple cars.
 * Adding and passing a requestID throughout the component and logging it would be a good way to trace each request that get's into the API separately. Which would also be useful in error debugging for something running in production for example. 
+* x-api-key based authentication would be nice to have
