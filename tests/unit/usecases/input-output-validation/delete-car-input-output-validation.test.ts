@@ -6,6 +6,7 @@ describe(__filename, () => {
   const inputValidationUsecase = new InputValidationUsecase();
   const outputValidationUsecase = new OutputValidationUsecase();
   const path = '/deleteCar';
+  const method = 'DELETE';
 
   const mockNext = () => {};
 
@@ -14,6 +15,7 @@ describe(__filename, () => {
 
       const mockRequest = {
         path,
+        method,
         body: {
           id: 'SomeUuid',
         },
@@ -26,6 +28,7 @@ describe(__filename, () => {
 
       const mockRequest = {
         path,
+        method,
         body: {
         },
       } as Request;
@@ -52,6 +55,7 @@ describe(__filename, () => {
 
       const mockRequest = {
         path,
+        method,
         body: {
           id: 'someUUID',
           additional: 'additionalProperty'
@@ -82,6 +86,7 @@ describe(__filename, () => {
 
       const mockRequest = {
         path,
+        method,
         body: {
           id: 128,
         },
@@ -119,7 +124,7 @@ describe(__filename, () => {
         json: () => {}
       } as unknown as Request;
 
-      outputValidationUsecase.execute({ path } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
+      outputValidationUsecase.execute({ path, method } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
     });
 
     // TODO: similar test cases can be compressed with test.each
@@ -142,7 +147,7 @@ describe(__filename, () => {
       ];
 
       try {
-        outputValidationUsecase.execute({ path } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({ path, method } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error.message).toEqual(JSON.stringify(expectedError));
@@ -172,7 +177,7 @@ describe(__filename, () => {
 
 
       try {
-        outputValidationUsecase.execute({ path } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({ path, method } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error.message).toEqual(JSON.stringify(expectedError));
@@ -201,7 +206,7 @@ describe(__filename, () => {
 
 
       try {
-        outputValidationUsecase.execute({ path } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
+        outputValidationUsecase.execute({ path, method } as Request, mockResponse as unknown as Response, mockNext as NextFunction);
         throw new Error('This line should not be reached');
       } catch (error) {
         expect(error.message).toEqual(JSON.stringify(expectedError));

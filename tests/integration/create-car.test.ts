@@ -34,8 +34,8 @@ describe(__filename, () => {
     await mongoose.disconnect();
   });
 
-  describe('GET', () => {
-    it('/createCar should return createdCar', async () => {
+  describe('POST', () => {
+    it('/car should return createdCar', async () => {
       const requestBody: CreateCarMetadata = {
         model: 'someModel',
         color: 'someColor',
@@ -43,7 +43,7 @@ describe(__filename, () => {
         people: 5,
         distance: 5000
       };
-      const res = await request(expressServer).post('/createCar').send(requestBody);
+      const res = await request(expressServer).post('/car').send(requestBody);
 
       const expected = {
         id: 'mocked_uuid',
@@ -54,7 +54,7 @@ describe(__filename, () => {
       expect(res.statusCode).toEqual(200);
     });
 
-    it('/createCar should fail for invalid input', async () => {
+    it('/car should fail for invalid input', async () => {
       const requestBody: CreateCarMetadata = {
         model: 'someModel',
         color: 'someColor',
@@ -63,7 +63,7 @@ describe(__filename, () => {
         distance: 5000
       };
 
-      const res = await request(expressServer).post('/createCar').send(requestBody);
+      const res = await request(expressServer).post('/car').send(requestBody);
 
       expect(res.statusCode).toEqual(422);
       expect(res.body?.message).toEqual('[{"instancePath":"/people","schemaPath":"#/properties/people/maximum","keyword":"maximum","params":{"comparison":"<=","limit":10},"message":"must be <= 10"}]');

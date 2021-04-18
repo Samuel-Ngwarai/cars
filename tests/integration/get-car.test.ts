@@ -45,10 +45,10 @@ describe(__filename, () => {
         distance: 5000
       };
       uuidSpy.mockReturnValue('mocked_uuid');
-      await request(expressServer).post('/createCar').send(requestBody);
+      await request(expressServer).post('/car').send(requestBody);
 
       uuidSpy.mockReturnValue('mocked_uuid2');
-      await request(expressServer).post('/createCar').send(requestBody);
+      await request(expressServer).post('/car').send(requestBody);
 
       // wait till items are in database to avoid race condition
       setTimeout(() => {
@@ -56,8 +56,8 @@ describe(__filename, () => {
       }, 1000);
     });
 
-    it('/getCars should retrieve all Existing Cars', async () => {
-      const res = await request(expressServer).get('/getCars');;
+    it('/car should retrieve all Existing Cars', async () => {
+      const res = await request(expressServer).get('/car');;
 
       const expected = [
         {
@@ -82,8 +82,8 @@ describe(__filename, () => {
       expect(res.statusCode).toEqual(200);
     });
 
-    it('/getCars should retrieve an existing Car', async () => {
-      const res = await request(expressServer).get('/getCars?id=mocked_uuid');;
+    it('/car should retrieve an existing Car', async () => {
+      const res = await request(expressServer).get('/car?id=mocked_uuid');;
 
       const expected = [
         {
@@ -100,8 +100,8 @@ describe(__filename, () => {
       expect(res.statusCode).toEqual(200);
     });
 
-    it('/getCars should retrieve an existing Car', async () => {
-      const res = await request(expressServer).get('/getCars?id=unknownID');;
+    it('/car should retrieve an existing Car', async () => {
+      const res = await request(expressServer).get('/car?id=unknownID');;
 
       expect(res.body?.message).toEqual('Car with id unknownID does not exist in the database');
       expect(res.statusCode).toEqual(500);
