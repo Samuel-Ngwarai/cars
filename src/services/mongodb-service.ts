@@ -62,12 +62,18 @@ export class MongoDBService implements IDatabaseService {
         color: car.color,
       };
 
+      const carExists = await this.CarModel.exists({ id: car.id });
+
+      if (!carExists) {
+        throw new Error(`Car with id ${car.id} does not exist in the database`);
+      }
+
       Object.keys(itemsToUpdate).forEach(key => itemsToUpdate[key] === undefined && delete itemsToUpdate[key]);
 
       const updated = await this.CarModel.findOneAndUpdate({ id: car.id }, itemsToUpdate, { upsert: false });
 
       if (!updated) {
-        throw new Error('Update Unsuccessful');
+        throw new Error('Database update unsuccessful');
       }
 
     } catch (error) {

@@ -11,18 +11,19 @@ import { logger } from './utils/logger';
 export default class App {
   public expressServer: Express;
   private server: Server;
+  public mongoDBService: MongoDBService;
 
   public constructor(private readonly listen: boolean) {}
 
   public async init(initializeDBConnection: boolean): Promise<void> {
     this.server = new Server();
 
-    const mongoDBService = new MongoDBService();
+    this.mongoDBService = new MongoDBService();
     if (initializeDBConnection) {
-      await mongoDBService.initializeDBConnection();
+      await this.mongoDBService.initializeDBConnection();
     }
 
-    const carsManagementController = new CarsManagementController(mongoDBService);
+    const carsManagementController = new CarsManagementController(this.mongoDBService);
     const routes = new Routes();
 
     this.server.addExtensions();
