@@ -4,7 +4,6 @@ import config from 'config';
 import { Car, MongooseCarSchema } from '../entities/car';
 import { IDatabaseService } from '../entities/database-i';
 import { GeneralError } from '../entities/error';
-
 import { logger } from '../utils/logger';
 
 export class MongoDBService implements IDatabaseService {
@@ -15,7 +14,11 @@ export class MongoDBService implements IDatabaseService {
 
   constructor() {}
 
-  public async initializeDBConnection() {
+  /**
+   * Initialise connection to database
+   * @returns boolean
+   */
+  public async initializeDBConnection(): Promise<boolean>{
     logger.info('MongoDBService::constructor, initializing mongodb connection');
     mongoose.connect(this.mongoDBUri, {
       useNewUrlParser: true,
@@ -40,6 +43,11 @@ export class MongoDBService implements IDatabaseService {
     });
   }
 
+  /**
+   * Checks if an item with the specified ID exists in the database
+   * @param id string
+   * @returns boolean
+   */
   private async existsInDatabase(id: string): Promise<boolean> {
     const carExists = await this.CarModel.exists({ id });
 
@@ -50,6 +58,10 @@ export class MongoDBService implements IDatabaseService {
     return true;
   }
 
+  /**
+   * Stores a car in the database
+   * @param car Car
+   */
   public async store(car: Car): Promise<void>{
     logger.debug(`MongoDBService::store with id ${car.id}`);
     try {
@@ -61,6 +73,10 @@ export class MongoDBService implements IDatabaseService {
     }
   }
 
+  /**
+   * Updates an existing Car's properties
+   * @param car Car
+   */
   public async update(car: Car): Promise<void> {
     logger.debug(`MongoDBService::update with id ${car.id}`);
     try {
@@ -88,7 +104,12 @@ export class MongoDBService implements IDatabaseService {
     }
   }
 
-  public async get(id: string): Promise<Car[]>{
+  /**
+   * Get 1 car if given id otherwise return all cars in database
+   * @param id string
+   * @returns car array
+   */
+  public async get(id?: string): Promise<Car[]>{
     logger.debug(`MongoDBService::get with id ${id}`);
     try {
 
@@ -99,7 +120,7 @@ export class MongoDBService implements IDatabaseService {
 
         cars = await this.CarModel.find({ id });
       } else {
-        cars = await this.CarModel.find({});
+        cars = await this.CarModel.find();
       }
 
       cars =  cars.map((storedCar) => {
@@ -109,10 +130,19 @@ export class MongoDBService implements IDatabaseService {
       return cars;
     } catch (error) {
       logger.error('MongoDBService::get, error occured whilst getting car', error);
+
+      if (error.message.includes(`Car with id ${id} does not exist in the database`)) {
+        throw new GeneralError({ message: error.message, status: 404 });
+      }
+
       throw new GeneralError({ message: error.message });
     }
   }
 
+  /**
+   * Delete car in database given id
+   * @param id string
+   */
   public async delete(id: string): Promise<void>{
     logger.debug(`MongoDBService::delete with id ${id}`);
     try {

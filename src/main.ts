@@ -5,7 +5,6 @@ import { Server } from './server';
 import { CarsManagementController } from './controllers/cars-management-controller';
 import { MongoDBService } from './services/mongodb-service';
 import { Routes } from './routes';
-
 import { logger } from './utils/logger';
 
 export default class App {

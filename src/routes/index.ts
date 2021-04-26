@@ -1,4 +1,4 @@
-import { Express, Request, Response, NextFunction } from 'express';
+import { Express, Request, Response } from 'express';
 
 import { IRoute } from './routes-i';
 import { CarsManagementController } from '../controllers/cars-management-controller';
@@ -7,11 +7,10 @@ import { InputValidationUsecase, OutputValidationUsecase } from '../usecases/inp
 export class Routes implements IRoute {
   private inputValidationUsecase = new InputValidationUsecase();
   private outputValidationUsecase = new OutputValidationUsecase();
-  constructor() {}
 
   public register(app: Express, carsManagementController: CarsManagementController): void {
     app.get('/', async (req: Request, res: Response) => {
-      res.status(404).send('Uknown route called. Try "/createCar" for example');
+      res.status(404).send('Uknown route called. Try "GET /car" for example');
     });
 
     app.get('/readyz', async (req: Request, res: Response) => {
@@ -44,7 +43,7 @@ export class Routes implements IRoute {
       this.outputValidationUsecase.execute.bind(this.outputValidationUsecase));
 
     app.get('*',function (req: Request, res: Response) {
-      res.status(404).send('Uknown route called. Try "/createCar" for example');
+      res.status(404).send('Uknown route called. Try "GET /car" for example');
     });
   }
 }
