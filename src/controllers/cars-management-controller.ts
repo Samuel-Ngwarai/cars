@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 
 import { CreateCarMetadata, Car } from '../entities/car';
 import { IDatabaseService } from '../entities/database-i';
-
 import { CreateCarUsecase } from '../usecases/car-management/create-car-usecase';
 import { StoreCarUsecase } from '../usecases/database/store-data-usecase';
 import { logger } from '../utils/logger';
@@ -12,6 +11,13 @@ export class CarsManagementController {
     private storeCarUsecase = new StoreCarUsecase(this.database);
     constructor(private readonly database: IDatabaseService) {}
 
+    /**
+     * Creates a car and assigns the returned car to the res.locals
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     * @returns void
+     */
     public async createCar(req: Request, res: Response, next: NextFunction): Promise<void> {
       logger.info('CarsManagementController::createCar');
       try {
@@ -20,7 +26,6 @@ export class CarsManagementController {
         const newCar = this.createCarUsecase.execute(createCarData);
 
         await this.storeCarUsecase.execute(newCar);
-
         res.locals = { response: newCar };
         return next();
       } catch (error) {

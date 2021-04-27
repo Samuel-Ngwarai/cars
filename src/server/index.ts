@@ -9,7 +9,7 @@ import { logger } from '../utils/logger';
 
 export class Server {
   private server: Express;
-  private port = config.get('PORT');
+  private port: number = config.get('PORT');
 
   public constructor() {
     this.server = express();

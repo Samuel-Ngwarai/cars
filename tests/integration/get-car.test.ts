@@ -100,11 +100,11 @@ describe(__filename, () => {
       expect(res.statusCode).toEqual(200);
     });
 
-    it('/car should retrieve an existing Car', async () => {
+    it('/car should return 404 if car with given id is not found', async () => {
       const res = await request(expressServer).get('/car?id=unknownID');;
 
       expect(res.body?.message).toEqual('Car with id unknownID does not exist in the database');
-      expect(res.statusCode).toEqual(500);
+      expect(res.statusCode).toEqual(404);
     });
   });
 });
